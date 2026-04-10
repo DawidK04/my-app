@@ -1,64 +1,93 @@
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useState } from "react";
-import { Button, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Alert, Button, FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import { RootStackParamList } from "../(tabs)/index";
+import ListItem from "../../components/ListItem";
 
 type HomeScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, "Home">;
 };
 
-const events = [
-  { id: 1, title: "Wyklad React", description: "Sala A1, 10:00", location: "Płock" },
-  { id: 2, title: "Wyklad React 2", description: "Sala A2, 12:00", location: "Warszawa" },
-  { id: 3, title: "Wyklad React 3", description: "Sala A3, 14:00", location: "Kraków" },
-  { id: 4, title: "Wyklad React 4", description: "Sala A4, 16:00", location: "Gdańsk" },
-  { id: 5, title: "Wyklad React 5", description: "Sala A5, 18:00", location: "Wrocław" },
-  { id: 6, title: "Wyklad React 6", description: "Sala A6, 20:00", location: "Poznań" },
-  { id: 7, title: "Wyklad React 7", description: "Sala A7, 22:00", location: "Szczecin" },
-  { id: 8, title: "Wyklad React 8", description: "Sala A8, 24:00", location: "Łódź" },
-  { id: 9, title: "Wyklad React 9", description: "Sala A9, 26:00", location: "Bydgoszcz" },
-  { id: 10, title: "Wyklad React 10", description: "Sala A10, 28:00", location: "Lublin" },
-  { id: 11, title: "Wyklad React 11", description: "Sala A11, 30:00", location: "Katowice" },
-  { id: 12, title: "Wyklad React 12", description: "Sala A12, 32:00", location: "Rzeszów" },
-  { id: 13, title: "Wyklad React 13", description: "Sala A13, 34:00", location: "Toruń" },
-  { id: 14, title: "Wyklad React 14", description: "Sala A14, 36:00", location: "Opole" },
-  { id: 15, title: "Wyklad React 15", description: "Sala A15, 38:00", location: "Kielce" },
-  { id: 16, title: "Wyklad React 16", description: "Sala A16, 40:00", location: "Olsztyn" },
-  { id: 17, title: "Wyklad React 17", description: "Sala A17, 42:00", location: "Zielona Góra" },
-  { id: 18, title: "Wyklad React 18", description: "Sala A18, 44:00", location: "Gorzów Wielkopolski" },
-  { id: 19, title: "Wyklad React 19", description: "Sala A19, 46:00", location: "Białystok" },
-  { id: 20, title: "Wyklad React 20", description: "Sala A20, 48:00", location: "Toruń" },
+interface EventItem {
+  id: number;
+  title: string;
+  description: string;
+  location: string;
+  time: string;
+  isHighlighted?: boolean;
+}
+
+const events: EventItem[] = [
+  { id: 1, title: "Laboratorium mobile: Podstawy", description: "Wprowadzenie do React Native", location: "Sala A1, Płock", time: "10:00" },
+  { id: 2, title: "Hooki od podstaw", description: "Zarządzanie stanem z useState", location: "Sala A2, Warszawa", time: "12:00" },
+  { id: 3, title: "Architektura nawigacji", description: "Nawigacja w aplikacjach mobilnych", location: "Sala A3, Kraków", time: "14:00" },
+  { id: 4, title: "Pracownia UI/UX", description: "Tworzenie pięknych animacji", location: "Sala A4, Gdańsk", time: "16:00" },
+  { id: 5, title: "Sieciowe API i integracje", description: "Praca z zewnętrznym API", location: "Sala A5, Wrocław", time: "18:00" },
+  { id: 6, title: "Silne typowanie w praktyce", description: "TypeScript w React Native", location: "Sala A6, Poznań", time: "20:00" },
+  { id: 7, title: "Wydajność systemów mobilnych", description: "Optymalizacja wydajności aplikacji", location: "Sala A7, Szczecin", time: "22:00" },
+  { id: 8, title: "QA: Testowanie automatyczne", description: "Testowanie komponentów w Jest", location: "Sala A8, Łódź", time: "08:00" },
+  { id: 9, title: "Zaawansowane wzorce JS", description: "Wzorce projektowe w Reakcie", location: "Sala A9, Bydgoszcz", time: "10:00" },
+  { id: 10, title: "DevOps dla Mobile", description: "Proces CI/CD dla React Native", location: "Sala A10, Lublin", time: "12:00" },
+  { id: 11, title: "Powiadomienia Push i FCM", description: "Wysyłanie Powiadomień Push", location: "Sala A11, Katowice", time: "14:00" },
+  { id: 12, title: "Zarządzanie dystrybucją Apple", description: "Publikacja w App Store", location: "Sala A12, Rzeszów", time: "16:00" },
+  { id: 13, title: "Metodyka wdrażania Android", description: "Publikacja w Google Play", location: "Sala A13, Toruń", time: "18:00" },
+  { id: 14, title: "Integracja natywnego kodu", description: "Użycie natywnych modułów (Java/Swift)", location: "Sala A14, Opole", time: "20:00" },
+  { id: 15, title: "Bazy danych offline (NoSQL)", description: "Praca z bazami danych noSQL", location: "Sala A15, Kielce", time: "22:00" }
 ];
 
+
+
 export default function HomeScreen({ navigation }: HomeScreenProps) {
-  const [count, setCount] = useState<number>(0);
+  const [count, setCount] = useState(0);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Smart Campus</Text>
-      <Text style={styles.subtitle}>Moja pierwsza aplikacja mobilna</Text>
 
-      <Button title="Zwiększ" onPress={() => setCount(count + 1)} />
-      <Text>Licznik: {count}</Text>
+      <Text style={styles.subtitle}>W ilu zajęciach chcesz uczestniczyć?</Text>
+      <View style={styles.counterContainer}>
+        <Text style={styles.counterText}>Licznik: {count}</Text>
+        <Button title="Zwiększ" onPress={() => setCount(count + 1)} />
+      </View>
 
-      <ScrollView style={styles.list}>
-        {events.map((event) => (
-          <View key={event.id} style={styles.item}>
-            <Text style={styles.itemTitle}>{event.title}</Text>
-            <Text>{event.description}</Text>
-            <Text style={styles.itemLocation}>{event.location}</Text>
-            <Button
-              title="Szczegóły"
-              onPress={() =>
+      <FlatList
+        style={styles.list}
+        data={events}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item, index }) => {
+          const isLocked = index >= count;
+
+          return (
+            <Pressable
+              style={({ pressed }) => [
+                pressed && !isLocked && { opacity: 0.7 },
+                isLocked && { opacity: 0.5 }
+              ]}
+              onPress={() => {
+                if (isLocked) {
+                  Alert.alert("Brak dostępu", "Zwiększ licznik, aby móc wejść w ten wykład.");
+                  return;
+                }
                 navigation.navigate("Details", {
-                  title: event.title,
-                  description: event.description,
-                })
-              }
-            />
-          </View>
-        ))}
-      </ScrollView>
+                  title: item.title,
+                  description: item.description,
+                  location: item.location,
+                  time: item.time,
+                });
+              }}
+            >
+              {({ pressed, hovered }: any) => (
+                <ListItem
+                  title={item.title + (isLocked ? " 🔒" : "")}
+                  description={item.description}
+                  location={item.location || ""}
+                  isHighlighted={!isLocked && (hovered || pressed || item.isHighlighted || false)}
+                />
+              )}
+            </Pressable>
+          );
+        }}
+      />
     </View>
   );
 }
@@ -97,5 +126,15 @@ const styles = StyleSheet.create({
   itemLocation: {
     color: "#666",
     marginBottom: 6,
+  },
+  counterContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  counterText: {
+    fontSize: 18,
+    fontWeight: "500",
+    marginRight: 16,
   },
 });

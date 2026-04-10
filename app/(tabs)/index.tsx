@@ -8,6 +8,8 @@ export type RootStackParamList = {
   Details: {
     title: string;
     description: string;
+    location: string;
+    time: string;
   };
 };
 
