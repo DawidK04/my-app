@@ -1,41 +1,10 @@
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useState } from "react";
-import { Alert, Button, FlatList, Pressable, StyleSheet, Text, View } from "react-native";
-import { RootStackParamList } from "../(tabs)/index";
+import { Alert, Button, FlatList, Pressable, Text, View } from "react-native";
 import ListItem from "../../components/ListItem";
-
-type HomeScreenProps = {
-  navigation: NativeStackNavigationProp<RootStackParamList, "Home">;
-};
-
-interface EventItem {
-  id: number;
-  title: string;
-  description: string;
-  location: string;
-  time: string;
-  isHighlighted?: boolean;
-}
-
-const events: EventItem[] = [
-  { id: 1, title: "Laboratorium mobile: Podstawy", description: "Wprowadzenie do React Native", location: "Sala A1, Płock", time: "10:00" },
-  { id: 2, title: "Hooki od podstaw", description: "Zarządzanie stanem z useState", location: "Sala A2, Warszawa", time: "12:00" },
-  { id: 3, title: "Architektura nawigacji", description: "Nawigacja w aplikacjach mobilnych", location: "Sala A3, Kraków", time: "14:00" },
-  { id: 4, title: "Pracownia UI/UX", description: "Tworzenie pięknych animacji", location: "Sala A4, Gdańsk", time: "16:00" },
-  { id: 5, title: "Sieciowe API i integracje", description: "Praca z zewnętrznym API", location: "Sala A5, Wrocław", time: "18:00" },
-  { id: 6, title: "Silne typowanie w praktyce", description: "TypeScript w React Native", location: "Sala A6, Poznań", time: "20:00" },
-  { id: 7, title: "Wydajność systemów mobilnych", description: "Optymalizacja wydajności aplikacji", location: "Sala A7, Szczecin", time: "22:00" },
-  { id: 8, title: "QA: Testowanie automatyczne", description: "Testowanie komponentów w Jest", location: "Sala A8, Łódź", time: "08:00" },
-  { id: 9, title: "Zaawansowane wzorce JS", description: "Wzorce projektowe w Reakcie", location: "Sala A9, Bydgoszcz", time: "10:00" },
-  { id: 10, title: "DevOps dla Mobile", description: "Proces CI/CD dla React Native", location: "Sala A10, Lublin", time: "12:00" },
-  { id: 11, title: "Powiadomienia Push i FCM", description: "Wysyłanie Powiadomień Push", location: "Sala A11, Katowice", time: "14:00" },
-  { id: 12, title: "Zarządzanie dystrybucją Apple", description: "Publikacja w App Store", location: "Sala A12, Rzeszów", time: "16:00" },
-  { id: 13, title: "Metodyka wdrażania Android", description: "Publikacja w Google Play", location: "Sala A13, Toruń", time: "18:00" },
-  { id: 14, title: "Integracja natywnego kodu", description: "Użycie natywnych modułów (Java/Swift)", location: "Sala A14, Opole", time: "20:00" },
-  { id: 15, title: "Bazy danych offline (NoSQL)", description: "Praca z bazami danych noSQL", location: "Sala A15, Kielce", time: "22:00" }
-];
-
-
+import { events } from "../../data/events";
+import { Event } from "../../types/Event";
+import { HomeScreenProps } from "../../types/HomeScreenTypes";
+import { styles } from "./HomeScreenStyles";
 
 export default function HomeScreen({ navigation }: HomeScreenProps) {
   const [count, setCount] = useState(0);
@@ -54,7 +23,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
         style={styles.list}
         data={events}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item, index }) => {
+        renderItem={({ item, index }: { item: Event; index: number }) => {
           const isLocked = index >= count;
 
           return (
@@ -81,6 +50,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
                   title={item.title + (isLocked ? " 🔒" : "")}
                   description={item.description}
                   location={item.location || ""}
+                  category={item.category}
                   isHighlighted={!isLocked && (hovered || pressed || item.isHighlighted || false)}
                 />
               )}
@@ -91,50 +61,3 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#f2f2f2",
-    alignItems: "center",
-    paddingTop: 20,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: "bold",
-  },
-  subtitle: {
-    fontSize: 16,
-    marginTop: 10,
-    marginBottom: 16,
-  },
-  list: {
-    width: "100%",
-    marginTop: 12,
-  },
-  item: {
-    backgroundColor: "#fff",
-    padding: 12,
-    marginHorizontal: 16,
-    marginBottom: 10,
-    borderRadius: 8,
-  },
-  itemTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  itemLocation: {
-    color: "#666",
-    marginBottom: 6,
-  },
-  counterContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 16,
-  },
-  counterText: {
-    fontSize: 18,
-    fontWeight: "500",
-    marginRight: 16,
-  },
-});

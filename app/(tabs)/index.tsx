@@ -1,17 +1,9 @@
 import { NavigationContainer, NavigationIndependentTree } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../types/Navigation";
 import DetailsScreen from "../screens/DetailsScreen";
 import HomeScreen from "../screens/HomeScreen";
 
-export type RootStackParamList = {
-  Home: undefined;
-  Details: {
-    title: string;
-    description: string;
-    location: string;
-    time: string;
-  };
-};
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
