@@ -3,7 +3,8 @@ export interface Event {
   title: string;
   description: string;
   location: string;
-  time: string;
+  date: string;
   category: string;
+  speaker: string;
   isHighlighted?: boolean;
 }

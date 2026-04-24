@@ -26,6 +26,12 @@ export const styles = StyleSheet.create({
         color: "#444",
         marginBottom: 4,
     },
+    speaker: {
+        fontSize: 13,
+        color: "#555",
+        fontWeight: "500",
+        marginBottom: 4,
+    },
     categoryTag: {
         backgroundColor: "#eee",
         paddingHorizontal: 8,

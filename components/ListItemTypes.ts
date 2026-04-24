@@ -3,5 +3,6 @@ export type ListItemProps = {
     description: string;
     location: string;
     category: string;
+    speaker: string;
     isHighlighted: boolean;
 };

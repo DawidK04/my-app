@@ -18,6 +18,20 @@ export const styles = StyleSheet.create({
     maxWidth: 500,
     alignSelf: 'center',
   },
+  categoryTag: {
+    backgroundColor: '#e3f2fd',
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 8,
+    alignSelf: 'center',
+    marginBottom: 12,
+  },
+  categoryText: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#1976d2',
+    textTransform: 'uppercase',
+  },
   title: {
     fontSize: 26,
     fontWeight: '800',
