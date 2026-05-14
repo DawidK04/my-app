@@ -1,6 +1,6 @@
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useState } from "react";
-import { FlatList, Pressable, Text, View } from "react-native";
+import { Button, FlatList, Pressable, Text, View } from "react-native";
 
 import AddEventForm from "../../components/AddEventForm";
 import ListItem from "../../components/ListItem";
@@ -37,6 +37,14 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
       >
         <Text style={styles.apiButtonText}>Zobacz posty z API</Text>
       </Pressable>
+      <Button
+        title="Pokaż użytkowników z API"
+        onPress={() => navigation.navigate("Users")}
+      />
+      <Button
+        title="Pokaż listę zadań (To-Do)"
+        onPress={() => navigation.navigate("Todos")}
+      />
 
       <AddEventForm onAddEvent={addEvent} />
 

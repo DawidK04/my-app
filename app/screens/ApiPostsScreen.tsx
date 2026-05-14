@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import {
   ActivityIndicator,
   FlatList,
@@ -8,39 +8,20 @@ import {
 } from "react-native";
 
 import ApiPostItem from "../../components/ApiPostItem";
-import { ApiPostsScreenProps } from "../../types/Navigation";
+import { useFetch } from "../../hooks/useFetch";
+import { RootStackParamList } from "../../types/Navigation";
 import { Post } from "../../types/Post";
 
+type ApiPostsScreenProps = {
+  navigation: NativeStackNavigationProp<RootStackParamList, "ApiPosts">;
+};
+
 export default function ApiPostsScreen({ navigation }: ApiPostsScreenProps) {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>("");
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        setIsLoading(true);
-        setError("");
-
-        const response = await fetch(
-          "https://jsonplaceholder.typicode.com/posts"
-        );
-
-        if (!response.ok) {
-          throw new Error("Nie udało się pobrać danych z serwera.");
-        }
-
-        const data: Post[] = await response.json();
-        setPosts(data);
-      } catch (err) {
-        setError("Wystąpił błąd podczas pobierania danych.");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchPosts();
-  }, []);
+  const {
+    data: posts,
+    isLoading,
+    error,
+  } = useFetch<Post[]>("https://jsonplaceholder.typicode.com/posts");
 
   if (isLoading) {
     return (
@@ -64,7 +45,7 @@ export default function ApiPostsScreen({ navigation }: ApiPostsScreenProps) {
       <Text style={styles.header}>Posty z API</Text>
 
       <FlatList
-        data={posts}
+        data={posts ?? []}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <ApiPostItem

@@ -17,6 +17,8 @@ export type RootStackParamList = {
     title: string;
     body: string;
   };
+  Users: undefined;
+  Todos: undefined;
 };
 
 export type ApiPostsScreenProps = {

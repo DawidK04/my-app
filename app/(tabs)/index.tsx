@@ -5,6 +5,8 @@ import ApiPostDetailsScreen from "../screens/ApiPostDetailsScreen";
 import ApiPostsScreen from "../screens/ApiPostsScreen";
 import DetailsScreen from "../screens/DetailsScreen";
 import HomeScreen from "../screens/HomeScreen";
+import TodosScreen from "../screens/TodosScreen";
+import UsersScreen from "../screens/UsersScreen";
 
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -25,6 +27,16 @@ export default function App() {
             name="ApiPostDetails"
             component={ApiPostDetailsScreen}
             options={{ title: "Szczegóły posta" }}
+          />
+          <Stack.Screen
+            name="Users"
+            component={UsersScreen}
+            options={{ title: "Użytkownicy" }}
+          />
+          <Stack.Screen
+            name="Todos"
+            component={TodosScreen}
+            options={{ title: "Lista zadań" }}
           />
         </Stack.Navigator>
       </NavigationContainer>
